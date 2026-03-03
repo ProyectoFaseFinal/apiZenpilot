@@ -1,5 +1,3 @@
-const {DB_USER, DB_DATABASE, DB_PASSWORD, DB_HOST, DB_PORT } =  require('dotenv').config();
-const { rejects } = require('assert');
 const { Pool } = require('pg');
 
 //Hacemos la conexion de la base de datos a Pool
