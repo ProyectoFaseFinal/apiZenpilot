@@ -34,41 +34,48 @@ module.exports.getAllIdUsers = async (req, res) => {
     }
 }
 
-//controlador para poder crear un nuevo usuario
+//controlador para crear un nuevo usuario
 module.exports.createUsers = async (req, res) => {
     try {
-        //obtenemos el email y password del body de la solicitud
-        const {email, password} = req.body;
-        //validamos si esos datos lo obtuvimos
+        const { email, password } = req.body;
+
         if (!email) {
             return res.status(400).json({ message: 'email no introducido' });
         }
+
         if (!password) {
             return res.status(400).json({ message: 'password no introducido' });
         }
-        //consulta SQL para insertar un nuevo usuario
-        const query = 'INSERT INTO users (email, password) VALUES ($1, $2)';
-        const values = [email, password];
-        //validar si el gmail ya existe en la base de datos
-        const result = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-        if (result.rows.length > 0) {
-            return res.status(400).json({ message: 'El gmail ya existe', data: result.rows[0].email });
+
+        // Verificar si ya existe
+        const existingUser = await pool.query(
+            'SELECT * FROM users WHERE email = $1',
+            [email]
+        );
+
+        if (existingUser.rows.length > 0) {
+            return res.status(400).json({ message: 'El gmail ya existe' });
         }
-        //Si el gmail no existe, entonces insertamos datos
-        pool.query(query, values, (err, result) => {
-            if (err) {
-                console.log('Error al crear el usuario:', err);
-                res.status(500).json({message: 'Error al crear al usuario', error: err.message});
-            }
-            res.status(201).json({message: 'Usuario creado con exito', data: result.rows[0] });
-        })
+
+        // Insertar y devolver el usuario creado
+        const result = await pool.query(
+            'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *',
+            [email, password]
+        );
+
+        return res.status(201).json({
+            message: 'Usuario creado con éxito',
+            data: result.rows[0]
+        });
+
     } catch (error) {
-        //Verificar exepciones de errores por parte de la base de datos
-        console.error('Error al crear el usuario:', error);
-        res.status(500).json({ message: 'Error al crear el usuario' });
-        
+        console.error('🔥 Error real:', error);
+        return res.status(500).json({
+            message: 'Error al crear el usuario',
+            error: error.message
+        });
     }
-}
+};
 
 //controlador para actualizar un usuario por id
 module.exports.actualizarUsers = async (req, res) => {
