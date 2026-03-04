@@ -26,7 +26,7 @@ module.exports.guardarAbout = async (req, res) => {
             })
         }
         //consulta SQL para guardar la información
-        const query = "INSERT INTO about (idUser, nombre, edad) VALUES ($1, $2, $3)";
+        const query = "INSERT INTO about (idUsers, nombre, edad) VALUES ($1, $2, $3)";
         const values = [idUsers, nombre, edad];
         pool.query(query, values, (error, results) => {
             if (error) {
