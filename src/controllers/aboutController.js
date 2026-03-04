@@ -45,3 +45,43 @@ module.exports.guardarAbout = async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor' });
     }
 }
+//controlador para actualizar la información
+module.exports.actualizarAbout = async (req, res) => {
+    try {
+        const {id} = req.params;
+        const {nombre, edad } = req.body;
+        //consulta SQL para actualizar la información
+        const query = "UPDATE about SET nombre = $1, edad = $2 WHERE id = $3";
+        const values = [nombre, edad, id];
+        if (!nombre || !edad) {
+            return res.status(400).json({ message: 'Faltan datos requeridos' });
+        }
+        const result = await pool.query(query, values);
+        if (result.rowCount === 0) {
+            return res.status(404).json({ message: 'Información no encontrada' });
+        }
+        res.status(200).json({ message: 'Información actualizada con éxito' });
+    } catch (error) {
+        console.error('Error al actualizar la información:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+}
+//controlador para eliminar la información
+module.exports.deleteAbout = async (req, res) => {
+    try {
+        const {id} = req.params;
+        //consulta SQL para eliminar la información
+        const query= "DELETE FROM about WHERE id = $1";
+        const values = [id];
+        const result = await pool.query(query, values);
+        if (result.rowCount === 0) {
+            return res.status(404).json({ message: 'Información no encontrada' });
+        }
+        res.status(200).json({ message: 'Información eliminada con éxito' });
+    } catch (error) {
+        console.log("Error al eliminar la información: ", error);
+        res.status(500).json({
+            message: 'Error interno del servidor'
+        })
+    }
+}
