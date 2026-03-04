@@ -15,3 +15,33 @@ module.exports.getAllAbout = async (req, res) => {
         res.status(500).json({ message: 'Error interno del servidor' });
     }
 }
+//controlador para guardar datos del conductor
+module.exports.guardarAbout = async (req, res) => {
+    try {
+        const {idUsers, nombre, edad } = req.body;
+        //verificar que se este toda la información
+        if (!idUsers || !nombre || !edad) {
+            return res.status(400).json({
+                message: 'Faltan datos requeridos' 
+            })
+        }
+        //consulta SQL para guardar la información
+        const query = "INSERT INTO about (idUser, nombre, edad) VALUES ($1, $2, $3)";
+        const values = [idUsers, nombre, edad];
+        pool.query(query, values, (error, results) => {
+            if (error) {
+                res.status(500).json({
+                    message: 'Error al guardar la información', 
+                    error: error.message
+                })
+            } else {
+                res.status(201).json({
+                    message: 'Información guardada con éxito'
+                })
+            }
+        })
+    } catch (error) {
+        console.log('Error al guardar la información:', error);
+        res.status(500).json({ message: 'Error interno del servidor' });
+    }
+}

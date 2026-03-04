@@ -1,7 +1,8 @@
 const {Router} = require('express');
 const router = Router();
-const {getAllAbout} = require('../controllers/aboutController.js');
+const {getAllAbout, guardarAbout} = require('../controllers/aboutController.js');
 
 router.get('/', getAllAbout);
+router.post('/', guardarAbout);
 
 module.exports = router;
