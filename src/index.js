@@ -10,6 +10,7 @@ app.use(express.json());
 
 //routes
 app.use('/api/usuarios', require('./routes/usersRouter.js'));
+app.use('/api/about', require('./routes/aboutRouter.js'));
 
 //puertos en escucha
 const PORT = process.env.PORT || 3002;
