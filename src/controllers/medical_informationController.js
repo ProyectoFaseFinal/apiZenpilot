@@ -25,7 +25,7 @@ module.exports.postMedicalInformation = async (req, res) => {
         const values = [idUser, doctor_nombre, medicina, altura, peso];
         const result = await pool.query(query, values);
         //enviar la respuesta al cliente
-        if (result.rows.length > 0) {
+        if (result.rowCount > 0) {
             console.log('información medica creada correctamente', result.rows);
             return res.status(201).json({ message: 'Información médica creada correctamente' });
         } else {
