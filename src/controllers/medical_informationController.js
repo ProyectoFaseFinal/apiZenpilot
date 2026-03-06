@@ -44,7 +44,7 @@ module.exports.updateMedicalInformation = async (req, res) => {
         const { doctor_nombre, medicina, altura, peso } = req.body;
         const id = req.params.id;
         //consulta SQL para actualizar la información médica
-        const query = 'UPDATE medical_information SET doctor_nombre = $2, medicina = $3, altura = $4, peso = $5 WHERE id = $6';
+        const query = 'UPDATE medical_information SET doctor_nombre = $1, medicina = $2, altura = $3, peso = $4 WHERE id = $5';
         const values = [doctor_nombre, medicina, altura, peso, id];
         const result = await pool.query(query, values);
         if (result.rowCount > 0) {
