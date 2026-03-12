@@ -1,7 +1,7 @@
 const pool = require('../config/config.js');
 
 //controlador para obtener toda la información médica
-module.exports.getsmartwatch = async (req, res) => {
+module.exports.getSmartwatch = async (req, res) => {
     //consulta a la base de datos para obtener toda la información médica
     const query = 'SELECT * FROM smartwatch';
     const result = await pool.query(query);

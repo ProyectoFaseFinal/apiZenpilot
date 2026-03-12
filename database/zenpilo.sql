@@ -28,3 +28,14 @@ CREATE TABLE medical_information (
         REFERENCES users(id)
         ON DELETE CASCADE
 );
+
+CREATE TABLE smartwatch (
+    id SERIAL PRIMARY KEY,
+    idUser INT NOT NULL,
+    frecuencia_cardiaca int NOT NULL,
+    velocidad_promedio int NOT NULL,
+    CONSTRAINT fk_user
+        FOREIGN KEY (idUser)
+        REFERENCES users(id)
+        ON DELETE CASCADE
+);
