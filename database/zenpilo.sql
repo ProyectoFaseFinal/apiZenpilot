@@ -34,6 +34,7 @@ CREATE TABLE smartwatch (
     idUser INT NOT NULL,
     frecuencia_cardiaca int NOT NULL,
     velocidad_promedio int NOT NULL,
+    name VARCHAR(100) NOT NULL,
     CONSTRAINT fk_user
         FOREIGN KEY (idUser)
         REFERENCES users(id)

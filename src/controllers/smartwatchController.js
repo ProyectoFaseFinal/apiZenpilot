@@ -24,15 +24,15 @@ module.exports.getSmartwatch = async (req, res) => {
 module.exports.postSmartwatch = async (req, res) => {
     try {
         //Obtener el cuerpo de la petición
-        const {idUser, frecuencia_cardiaca, velocidad_promedio} = req.body;
+        const {idUser, frecuencia_cardiaca, velocidad_promedio, name} = req.body;
         //VALIDAD BODY
-        if (!idUser || !frecuencia_cardiaca || !velocidad_promedio) {
+        if (!idUser || !frecuencia_cardiaca || !velocidad_promedio || !name) {
             console.log('Faltan campos obligatorios en el cuerpo de la petición', req.body);
             return res.status(400).json({ message: 'Faltan campos obligatorios en el cuerpo de la petición' });
         }
         //consulta SQL
-        const query = 'INSERT INTO smartwatch (idUser, frecuencia_cardiaca, velocidad_promedio) VALUES ($1, $2, $3)';
-        const values = [idUser, frecuencia_cardiaca, velocidad_promedio];
+        const query = 'INSERT INTO smartwatch (idUser, frecuencia_cardiaca, velocidad_promedio, name) VALUES ($1, $2, $3, $4)';
+        const values = [idUser, frecuencia_cardiaca, velocidad_promedio, name];
         const result = await pool.query(query, values);
         //enviar la respuesta al cliente
         if (result.rowCount > 0) {
@@ -51,11 +51,11 @@ module.exports.postSmartwatch = async (req, res) => {
 //controlador para actualizar la Smartwatch
 module.exports.updateSmartwatch = async (req, res) => {
     try {
-        const { frecuencia_cardiaca, velocidad_promedio } = req.body;
+        const { frecuencia_cardiaca, velocidad_promedio, name } = req.body;
         const id = req.params.id;
         //consulta SQL para actualizar la Smartwatch
-        const query = 'UPDATE smartwatch SET frecuencia_cardiaca = $1, velocidad_promedio = $2 WHERE id = $3';
-        const values = [frecuencia_cardiaca, velocidad_promedio, id];
+        const query = 'UPDATE smartwatch SET frecuencia_cardiaca = $1, velocidad_promedio = $2, name = $3 WHERE id = $4';
+        const values = [frecuencia_cardiaca, velocidad_promedio, name, id];
         const result = await pool.query(query, values);
         if (result.rowCount > 0) {
             console.log('Smartwatch actualizada correctamente', result.rows);
