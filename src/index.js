@@ -12,6 +12,7 @@ app.use(express.json());
 app.use('/api/usuarios', require('./routes/usersRouter.js'));
 app.use('/api/about', require('./routes/aboutRouter.js'));
 app.use('/api/medical_information', require('./routes/medical_informationRouter.js'));
+app.use('/api/smartwatch', require('./routes/smartWatchRouter.js'));
 
 //puertos en escucha
 const PORT = process.env.PORT || 3002;
